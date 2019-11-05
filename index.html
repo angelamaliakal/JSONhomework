@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Convert JSON Data to HTML Table</title>
+    <style>
+        th, td, p, input {
+            font:14px Verdana;
+        }
+        table, th, td
+        {
+            border: solid 1px #DDD;
+            border-collapse: collapse;
+            padding: 2px 3px;
+            text-align: center;
+        }
+        th {
+            font-weight:bold;
+        }
+    </style>
+</head>
+<body>
+	<h1>My Favorite Songs</h1>
+    <p id="divContainer"></p>
+<form>
+<select id="myList">
+  <option value="">Choose a Genre:</option>
+  <option value="Pop">Pop</option>
+  <option value="Rock">Rock</option>
+  <option value="Hip Hop">Hip-Hop</option>
+</select>
+<input type="button" value="Choose" onclick="printSong()">
+</form>
+<br>
+
+<p id="display"></p>
+
+<script language="javascript">
+	var mySongs = [
+            {
+                "Id": 0,
+                "Title": "10,000 Hours",
+                "Artist": "Dan + Shay ft. Justin Bieber",
+                "Year": 2019,
+                "Genre": ['Pop']
+            },
+            {
+                "Id": 1,
+                "Title": "River and Roads",
+                "Artist": "The Head and the Heart",
+                "Year": 2010,
+                "Genre": ['Rock']
+            },
+            {
+                "Id": 2,
+                "Title": "Angela",
+                "Artist": "The Lumineers",
+                "Year": 2016,
+                "Genre": ['Rock']
+            },
+            {
+                "Id": 3,
+                "Title": "Mess is Mine",
+                "Artist": "Vance Joy",
+                "Year": 2014,
+                "Genre": ['Pop']
+            },
+            {
+                "Id": 4,
+                "Title": "Dandelions",
+                "Artist": "Ruth B.",
+                "Year": 2017,
+                "Genre": ['Pop']
+            },
+            {
+                "Id": 5,
+                "Title": "Angels",
+                "Artist": "Khalid",
+                "Year": 2017,
+                "Genre": ['Pop']
+            },
+            {
+                "Id": 6,
+                "Title": "Love$ick",
+                "Artist": "Mura Masa ft. A$AP Rocky",
+                "Year": 2017,
+                "Genre": ['Hip Hop']
+            },
+            {
+                "Id": 7,
+                "Title": "Live Your Life",
+                "Artist": "T.I. ft. Rihanna",
+                "Year": 2008,
+                "Genre": ['Hip Hop']
+            },
+            {
+                "Id": 8,
+                "Title": "Slow it Down",
+                "Artist": "The Lumineers",
+                "Year": 2016,
+                "Genre": ['Rock']
+            },
+            {
+                "Id": 9,
+                "Title": "Best I Ever Had",
+                "Artist": "Drake",
+                "Year": 2009,
+                "Genre": ['Hip Hop']
+            }
+
+        ]
+
+var col = [];
+	for (var i = 0; i < mySongs.length; i++) {
+    	for (var key in mySongs[i]) {
+        	if (col.indexOf(key) === -1) {
+            	col.push(key);
+                }
+            }
+        }
+
+var table = document.createElement("table");
+var tr = table.insertRow(-1);
+for (var i = 0; i < col.length; i++) {
+	var th = document.createElement("th");
+    	th.innerHTML = col[i];
+        tr.appendChild(th);
+    }
+for (var i = 0; i < mySongs.length; i++) {
+	tr = table.insertRow(-1);
+for (var j = 0; j < col.length; j++) {
+	var tabCell = tr.insertCell(-1);
+    	tabCell.innerHTML = mySongs[i][col[j]];
+	}
+}
+var divContainer = document.getElementById("divContainer");
+divContainer.innerHTML = "";
+divContainer.appendChild(table);
+
+function chooseGenre() {
+	var genreValue = document.getElementById("myList").value;
+	var counter = 0;
+	var commonGenre = [];
+    for (i in mySongs) {
+		genreLength = JSON.stringify(mySongs[i].Genre.length)
+		for (var j = 0; j < genreLength; j++) {
+			currentGenre = (mySongs[i].Genre[j]);
+			if (currentGenre === genreValue) {
+				songId = JSON.stringify(mySongs[i].Id)
+				commonGenre.push(songId);
+			}
+			counter = counter + 1;
+			if (counter == genreLength) {
+				break;
+			}
+		}
+	}
+	return commonGenre;
+}
+
+function printSong() {
+	var commonGenre = chooseGenre();
+	for (song_id in commonGenre) {
+		for (songObject in mySongs) {
+			var id = JSON.stringify(mySongs[songObject].Id);
+			if (id == commonGenre[song_id]) {
+				var part2 = JSON.stringify(mySongs[songObject].Title);
+				var part3 = JSON.stringify(mySongs[songObject].Artist);
+				var part4 = JSON.stringify(mySongs[songObject].Genre);
+				var part5 = JSON.stringify(mySongs[songObject].Year);
+				var total = "Title: " + part2 + "<br>" + "Artist(s): " + part3 + "<br>" + "Genre(s): " + part4 + "<br>" + "Year: " + part5 + "<br>";
+         		document.write(total + "<br>");
+			}
+		}
+	}
+}
+</script>
+</body>
+
+</html>
